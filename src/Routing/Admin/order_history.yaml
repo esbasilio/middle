@@ -1,0 +1,24 @@
+admin_order-history_index:
+    path:       /
+    controller: 'App\Controller\Admin\OrderHistoryController::list'
+    methods:    GET
+
+admin_order-history_list:
+    path:       /list
+    controller: 'App\Controller\Admin\OrderHistoryController::list'
+    methods:    GET
+
+admin_order-history_new:
+    path:       /form
+    controller: 'App\Controller\Admin\OrderHistoryController::form'
+    methods:    GET|POST
+
+admin_order-history_edit:
+    path:       /form/{id}
+    controller: 'App\Controller\Admin\OrderHistoryController::form'
+    methods:    GET|POST
+
+admin_order-history_delete:
+    path:       /delete/{id}
+    controller: 'App\Controller\Admin\OrderHistoryController::delete'
+    methods:    DELETE

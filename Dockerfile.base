@@ -1,0 +1,86 @@
+FROM php:7.4-apache
+
+# SET DEFAULT ENVIRONMENT
+# -----------------------------
+ENV COMPOSER_VERSION="2.0.11"
+
+RUN apt-get update && apt-get install -y libmcrypt-dev \
+    && pecl install mcrypt-1.0.3 \
+    && docker-php-ext-enable mcrypt
+
+# Install Magento 2 dependencies
+RUN apt-get update && apt-get install -y \
+        libzip-dev \
+        cron \
+        git \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libmcrypt-dev \
+        libpng-dev \
+        libxml2-dev \
+        libxslt1-dev \
+        libicu-dev \
+        default-mysql-client \
+        xmlstarlet \
+        unzip \
+        libonig-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
+        bcmath \
+        gd \
+        json \
+        iconv \
+        mbstring \
+        pcntl \
+        soap \
+        xsl \
+        zip \
+        intl \
+        pdo \
+        pdo_mysql \
+        opcache \
+        sockets \
+        zip \
+    && docker-php-ext-configure opcache --enable-opcache \
+    && pecl install redis-5.3.4 \
+    && docker-php-ext-enable redis \
+    && a2enmod rewrite headers \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# # INSTALL NODE, NVM, NPM AND GRUNT
+# # -----------------------------
+# RUN apt-get update && \
+#     apt-get install -y --no-install-recommends gnupg && \
+#     curl -fsSL https://deb.nodesource.com/${NODE_VERSION} | bash - && \
+#     apt-get update && \
+#     apt-get install -y --no-install-recommends nodejs && \
+#     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+#     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+#     apt-get update && \
+#     apt-get install -y --no-install-recommends yarn && \
+#     npm install -g npm && \
+#     npm i -g grunt-cli
+
+# Install ioncube
+RUN cd /tmp \
+    && curl -o ioncube.tar.gz http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz \
+    && tar -xvzf ioncube.tar.gz \
+    && mv ioncube/ioncube_loader_lin_7.4.so /usr/local/lib/php/extensions/* \
+    && rm -Rf ioncube.tar.gz ioncube \
+    && echo "zend_extension=ioncube_loader_lin_7.4.so" > /usr/local/etc/php/conf.d/00_docker-php-ext-ioncube_loader_lin_7.4.ini
+
+# Set up the application
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY etc/php.ini /usr/local/etc/php/conf.d/00_magento.ini
+COPY etc/apache.conf /etc/apache2/conf-enabled/00_magento.conf
+
+# Update web root to pub
+# See: https://hub.docker.com/_/php#changing-documentroot-or-other-apache-configuration
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# Add www-data user access
+RUN chsh -s /bin/bash www-data
+
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]

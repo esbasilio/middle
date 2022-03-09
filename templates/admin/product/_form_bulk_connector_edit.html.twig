@@ -1,0 +1,110 @@
+<div class="modal-header">
+    <h5 class="modal-title" >{{ "Product Bulk Edit"|title }}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body" style="height: 300px;">
+    <form method="POST" action="{{ (path('admin_product_bulk_connector_edit', {'ids': ids, 'connector': (_current_connector) ? _current_connector.id : null})) }}">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="form-group">
+                    <label for="product_bulk_connector_edit_connector">Select connector</label>
+                    <select id="product_bulk_connector_edit_connector" class="form-control">
+                        <option></option>
+                        {% for conn in connectors %}
+                            {# show only connectors output type product enabled #}
+                            {% if conn.hasOutputType('product') %}
+                                <option 
+                                    value="{{ conn.id }}"
+                                    {% if (_current_connector and (conn.id == _current_connector.id)) %} selected {% endif %}
+                                    >{{ conn.code }} - {{ conn.application.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {% if _current_connector and _current_connector.application.strategy == 'mercado_libre' %}
+                    <div class="form-group">
+                        <label>Select offical store ID</label>
+                        <select id="mercado_libre_official_store_id" name="connector[{{ _current_connector.code }}][official_store_id]" class="form-control">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select listing type</label>
+                        <select id="mercado_libre_listing_type" name="connector[{{ _current_connector.code }}][listing_type_id]" class="form-control">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Warranty</label>
+                        <input type="text" name="connector[{{ _current_connector.code }}][warranty]" class="form-control">
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <input type="hidden" name="token" value="{{ csrf_token('bulk-connector-edit') }}"/>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal" >Close</button>
+    <button type="button" id="submitModalForm" class="btn btn-primary font-weight-bold mr-2">Guardar</button>
+</div>
+
+{% block javascripts %}
+    <script type="text/javascript">
+        jQuery(document).ready(($) => {
+            $('#product_bulk_connector_edit_connector').on('change', (e) => {
+                let element = e.target;
+                let connector_id = element.value;
+
+                $.ajax({
+                    url: `${_HOST}/product/bulk-connector-edit/${ids}/${connector_id}`,
+                    type: 'GET'
+                })
+                .done((data) => {
+                    $('#ajax-results').html(data);
+                })
+            })
+
+            /*$("#product_bulk_connector_edit_submit").click(function(event){
+                const form = $('section#ajax-results').children('.modal-body').children("form");
+                form.parsley().validate();
+                form.submit();
+            });*/
+
+            {% if _current_connector %}
+                let connector_id = '{{ _current_connector.id }}';
+                
+                $.ajax({
+                    url: `${_HOST}/api/v1/connector/meli-listing-types`,
+                    type: 'GET',
+                    headers: {
+                        'X-AUTH-TOKEN': _USERTOKEN
+                    }
+                })
+                .done((data) => {
+                    $('#mercado_libre_listing_type').append('<option value=""></option>');
+                    
+                    $.each(data, function (i, p) {
+                        $('#mercado_libre_listing_type').append($('<option></option>').val(p.id).html(p.name));
+                    })
+                });
+
+                $.ajax({
+                    url: `${_HOST}/api/v1/connector/meli-official-store/${connector_id}`,
+                    type: 'GET',
+                    headers: {
+                        'X-AUTH-TOKEN': _USERTOKEN
+                    }
+                })
+                .done((data) => {
+                    $('#mercado_libre_official_store_id').append('<option value=""></option>');
+                    
+                    $.each(data, function (i, p) {
+                        $('#mercado_libre_official_store_id').append($('<option></option>').val(p.official_store_id).html(p.name));
+                    })
+                });
+            {% endif %}
+        })
+    </script>
+{% endblock %}

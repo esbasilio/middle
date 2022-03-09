@@ -1,0 +1,45 @@
+admin_order_index:
+    path:       /
+    controller: 'App\Controller\Admin\OrderController::list'
+    methods:    GET
+
+admin_order_list:
+    path:       /list
+    controller: 'App\Controller\Admin\OrderController::list'
+    methods:    GET
+
+admin_order_new:
+    path:       /form
+    controller: 'App\Controller\Admin\OrderController::form'
+    methods:    GET|POST
+
+admin_order_edit:
+    path:       /form/{id}
+    controller: 'App\Controller\Admin\OrderController::form'
+    methods:    GET|POST
+
+admin_order_delete:
+    path:       /delete/{id}
+    controller: 'App\Controller\Admin\OrderController::delete'
+    methods:    DELETE
+
+# ----------------------
+# PULL Y PUSH CONNECTOR
+# ----------------------
+
+admin_order_pull:
+    path:       /pull/{connector_id}/{order_id}
+    controller: 'App\Controller\Admin\OrderController::pull'
+    methods:    GET
+    defaults:
+        connector_id: null
+        order_id: null
+
+admin_order_push:
+    path:       /push/{connector_id}/{order_id}
+    controller: 'App\Controller\Admin\OrderController::push'
+    methods:    GET
+    defaults:
+        connector_id: null
+        order_id: null
+        referer: /order/history/list

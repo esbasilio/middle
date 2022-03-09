@@ -1,0 +1,104 @@
+{% extends 'admin/product/show.html.twig' %}
+
+{% block tab_container %}
+    <div class="card card-custom gutter-b">
+        <div class="card-header">
+            <div class="card-title">
+                <h3 class="card-label">{{ "historial"|title }}</h3>
+            </div>
+        </div>
+        <div class="card-body">
+            {% import "admin/ui/table/_field.html.twig" as field %}
+            <table class="table table-separate table-head-custom table-checkable compact" id="kt_datatable1" token="data-table-{{ random(10, 99) }}">
+                <thead>
+                    <tr>
+                        <th class="text-nowrap text-center">{{ "ID"|title }}</th>
+                        <th class="text-nowrap text-center">{{ "SKU"|title }}</th>
+                        <th class="text-nowrap text-center">{{ "Applicación"|title }}</th>
+                        <th class="text-nowrap text-center">{{ "Referencia"|title }}</th>
+                        {# <th class="text-nowrap text-center">{{ "Respuestas"|title }}</th> #}
+                        <th class="text-nowrap text-center">{{ "Http Code"|title }}</th>
+                        <th class="text-nowrap text-center">{{ "Actualizado"|title }}</th>
+                        <th class="text-nowrap text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for history in entity.histories %}
+                        <tr>
+                            <td class="text-center valign-middle">{{ history.id }}</td>
+                            <td class="text-center valign-middle">{{ history.product.sku|title }}</td>
+                            <td class="text-center valign-middle">{{ history.connector.application.name|title }}</td>
+                            <td class="text-center valign-middle">{{ history.referenceId }}</td>
+                            {# <td class="text-center valign-middle">{{ history.required|join() }}</td> #}
+                            <td class="text-center valign-middle">
+                                <span class="mt-1 label label-default label-inline ">
+                                {% if history.code is defined %}
+                                    {{ history.code }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                                </span>
+                            </td>
+                            <td class="text-center valign-middle">{{ history.updated|date("d-m-Y H:m:s")  }}</td>
+                            <td class="text-center valign-middle">
+                                <button data-toggle="delete-ajax" data-url="{{ path('admin_product-history_delete',{id:history.id}) }}" entity-token="{{ csrf_token('delete' ~ history.id) }}" entity-data="{{history.id}}" class="btn btn-icon btn-light btn-hover-danger btn-xs">
+                                    <i class="flaticon-delete icon-md"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% for variation in entity.variations %}
+                        {% for history in variation.histories %}
+                            <tr>
+                                <td class="text-center valign-middle">{{ history.id }}</td>
+                                <td class="text-center valign-middle">{{ history.product.sku|title }}</td>
+                                <td class="text-center valign-middle">{{ history.connector.application.name|title }}</td>
+                                <td class="text-center valign-middle">{{ history.referenceId }}</td>
+                                {# <td class="text-center valign-middle">
+                                    <button type="button" class="btn btn-link-primary font-weight-bold" data-toggle="modal" data-target="#exampleModalSizeLg">
+                                        <i class="icon-2x text-dark-50 flaticon-medical"></i>Ver
+                                    </button>
+                                </td> #}
+                                <td class="text-center valign-middle">
+                                    <span class="mt-1 label label-default label-inline ">
+                                    {% if history.code is defined %}
+                                        {{ history.code }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                    </span>
+                                </td>
+                                <td class="text-center valign-middle">{{ history.updated|date("d-m-Y H:m:s") }}</td>
+                                <td class="text-center valign-middle">
+                                	<button data-toggle="delete-ajax" data-url="{{ path('admin_product-history_delete',{id:history.id}) }}" entity-token="{{ csrf_token('delete' ~ history.id) }}" entity-data="{{history.id}}" class="btn btn-icon btn-light btn-hover-danger btn-xs">
+									    <i class="flaticon-delete icon-md"></i>
+								    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModalSizeLg" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeLg" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detalle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

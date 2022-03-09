@@ -1,0 +1,28 @@
+admin_product-connector_index:
+    path:       /
+    controller: 'App\Controller\Admin\ProductConnectorController::list'
+    methods:    GET
+
+admin_product-connector_list:
+    path:       /list
+    controller: 'App\Controller\Admin\ProductConnectorController::list'
+    methods:    GET
+
+admin_product-connector_new:
+    path:       /form/{product}
+    controller: 'App\Controller\Admin\ProductConnectorController::form'
+    methods:    GET|POST
+    defaults:
+        template: 'admin/product/_form_connector.html.twig'
+
+admin_product-connector_edit:
+    path:       /form/{product}/{id}
+    controller: 'App\Controller\Admin\ProductConnectorController::form'
+    methods:    GET|POST
+    defaults:
+        template: 'admin/product/_form_connector.html.twig'
+
+admin_product-connector_delete:
+    path:       /delete/{id}
+    controller: 'App\Controller\Admin\ProductConnectorController::delete'
+    methods:    DELETE|Create

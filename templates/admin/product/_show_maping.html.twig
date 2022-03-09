@@ -1,0 +1,107 @@
+{% extends 'admin/product/show.html.twig' %}
+
+{% block tab_container %}
+
+<div class="card card-custom gutter-b">
+    <div class="card-body">
+        <table class="table table-checkable compact" data-table="ajax" id="datatable-{{ random(10, 99) }}" token="data-table-{{ random(10, 99) }}" >
+            <thead>
+                <tr>
+                    <th class="text-nowrap text-center">{{ "Producto"|title }}</th>
+                    <th class="text-nowrap text-center">{{ "Atributo"|title }}</th>
+                    <th class="text-nowrap text-center">{{ "Mapeo"|title }}</th>
+                    <th class="text-nowrap text-center">{{ "valores"|title }}</th>
+                    <th width="1%" class="text-nowrap text-center" data-orderable="false">{{ "acciones"|title }}</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        columns = [
+            {
+                name:"product.sku",
+                title: "Producto",
+                data: function(row, type, set){
+                    return (row.product.sku === undefined) ? null : row.product.sku;
+                },
+                class: "text-center valign-middle"
+            },
+            {
+                name:"attribute.code",
+                title: "Atributo",
+                data: function(row, type, set){
+                    return (row.attribute.code === undefined) ? null : row.attribute.code;
+                },
+                class: "text-center valign-middle"
+            },
+            {
+                name:"mapping.name",
+                title: "Mapeo",
+                data: function(row, type, set){
+                    return (row.mapping === "no mapping") ? row.mapping : row.mapping.name;
+                },
+                class: "text-center valign-middle"
+            },
+            {
+                name:"mapping.values",
+                title: "Valores de Mapeo",
+                data: function(row, type, set){
+                    return (row.mapping === "no mapping") ? row.mapping : row.mapping.values;
+                },
+                class: "text-center valign-middle"
+            },
+            {name:"action", data:'attribute.id'}
+        ];
+        columnDefs = [
+            {
+                targets: -3,
+                class: "text-center valign-middle",
+                orderable: false,
+                render: function(data, type, full, meta) {
+                    if (data == "no mapping"){
+                        return '<span class="label label-lg font-weight-bold label-warning label-inline"> indefinido </span>';
+                    } 
+                    return data;
+                },
+            },
+            {
+                targets: -2,
+                class: "text-center valign-middle",
+                orderable: false,
+                render: function(data, type, full, meta) {
+                    if (data == "no mapping"){
+                        return '';
+                    } 
+                    var valor = "";
+                    for (const [key, value] of Object.entries(data)) {
+                        valor += `${key} => ${value}  <br>`;
+                    }
+                    return valor;
+                },
+            },
+            {
+                targets: -1,
+                title: 'Acciones',
+                class: "text-nowrap text-center with-btn",
+                orderable: false,
+                render: function(data, type, full, meta) {
+                    return `\
+                        <button data-toggle="modal-ajax" data-url="${_HOST}/product_attribute/form/${data}" class="btn btn-sm btn-light-primary">\
+                            <i class="flaticon-search"></i>\
+                        </button>\
+                        <button data-toggle="modal-ajax" data-url="${_HOST}/client/attribute/mapping/form/${data}" class="btn btn-sm btn-light-primary">\
+                            <i class="flaticon-search"></i>\
+                        </button>\
+                    `;
+                },
+            }
+        ];
+
+        jQuery(document).ready(function() {
+            Datatables.initTableAjax(`${_HOST}/api/v1/client-attribute-mapping/product?product={{ entity.id }}`,columns,columnDefs);
+        });
+    </script>
+{% endblock %}

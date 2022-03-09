@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h5 class="modal-title" >{{ view.module.name|default("Modal")|upper }}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body" style="height: 315px;">
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-md-6 col-lg-6">
+            {{ form_row(form.code) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+            {{ form_row(form.path) }}
+        </div>
+        <div class="col-md-6 col-lg-6">
+            {{ form_row(form.view_type) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+            {{ form_row(form.color) }}
+        </div>
+    </div>
+{{ form_end(form) }}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal" >Close</button>
+    <button type="button" id="submitModalForm" class="btn btn-primary font-weight-bold mr-2">Guardar</button>
+</div>

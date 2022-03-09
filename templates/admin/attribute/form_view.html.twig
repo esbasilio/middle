@@ -1,0 +1,117 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block content %}
+    <div class="card card-custom gutter-b ">
+        <div class="card-header">
+            <h3 class="card-title">{{ view.module.name|upper }}</h3>
+        </div>
+        {{ form_start(form) }}
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 col-lg-3">
+                        {{ form_row(form.code) }}
+                    </div>
+                    <div class="col-md-12 col-lg-3">
+                        {{ form_row(form.label) }}
+                    </div>
+                    <div class="col-md-12 col-lg-3">
+                        {{ form_row(form.input_type) }}
+                    </div>
+                    <div class="col-md-12 col-lg-3">
+                        {{ form_row(form.type) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <span class="switch col-md-2 col-lg-2">
+                        <label>
+                            {{ form_widget(form.is_mapping_value) }}
+                            <span></span>
+                        </label>
+                    </span>
+                    </div>
+                {# <div class="separator separator-dashed my-10"></div>
+                <div class="my-5">
+                    <h3 class="text-dark font-weight-bold">{{ "valores del atibuto"|capitalize }}:</h3>
+                    {{ form_errors(form.mapping_value) }}
+                    <table class="table table-sm mapping_value m-t-10" data-prototype="{{ _self.service_template(form.mapping_value.vars.prototype)|e('html_attr') }}">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mapeo</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for app in form.mapping_value %}
+                            <tr>
+                                <td>{{ form_widget(app) }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> #}
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <a href="{{ path(view.routes['list'].path) }}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                    <div class="col-lg-6 text-lg-right">
+                        <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% macro service_template(fields) %}
+    <td>{{ form_widget(fields) }}</td>
+{% endmacro %}
+
+{% block javascripts %}
+{{ parent() }}
+    <script type="text/javascript">
+        var $addPhone = $('<td><button type="button" class="btn btn-sm btn-info">Nuevo Registro</button></td>');
+        var $linPhone = $('<tr></tr>').append($addPhone);
+
+        jQuery(document).ready(function() {
+            var $collectionPhone = $('table.mapping_value');
+            collection($collectionPhone,$addPhone,$linPhone);
+        });
+
+        function collection($collection,$button,$link) {
+            $collection.find('tbody>tr').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+
+            $collection.append($link);
+            $collection.data('index', $collection.find(':input').length);
+
+            $button.on('click', function(e) {
+                addTagForm($collection, $link);
+            });
+        }
+
+        function addTagForm($collectionHolder, $newLinkLi) {
+            var prototype = $collectionHolder.data('prototype');
+
+            var index = $collectionHolder.data('index');
+            var newForm = prototype;
+            newForm = newForm.replace(/__name__/g, index);
+
+            $collectionHolder.data('index', index + 1);
+            var $newFormLi = $('<tr></tr>').append(newForm);
+            addTagFormDeleteLink($newFormLi);
+            $newLinkLi.before($newFormLi);
+        }
+
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormButton = $('<td><button type="button" class="btn btn-sm btn-danger">Remover</button></td>');
+            $tagFormLi.append($removeFormButton);
+
+            $removeFormButton.on('click', function(e) {
+                $tagFormLi.remove();
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,131 @@
+key.trans.login: 'log in'
+key.trans.welcome: welcome
+key.trans.logout: 'log out'
+key.trans.username_email: 'username / email'
+key.trans.password: password
+key.trans.remember_me: 'remember me'
+key.trans.hello: 'hello, {full_name}!'
+key.trans.system: system
+key.trans.config_person: 'config person'
+key.trans.config_general: 'config general'
+key.trans.config_title: 'config title'
+key.trans.keyword: keyword
+key.trans.notifications: notifications
+key.trans.view_more: 'view more'
+key.trans.settings: settings
+key.trans.advanced: advanced
+key.trans.navigation: navigation
+key.trans.is_login: 'you are logged in as {username}!'
+key.trans.languaje_request: 'language request'
+key.trans.comment_created: comment_created
+key.trans.description: description
+key.trans.support: support
+key.trans.parent: parent
+key.trans.user_profile: 'user profile'
+key.trans.user_impersonation: 'user impersonate'
+key.trans.exit_impersonation: 'exit impersonation'
+key.trans.impersonator_user: 'impersonator user: {data}'
+key.trans.dashboard: dashboard
+key.trans.role: role
+key.trans.route: route
+key.trans.action: action
+key.trans.is_inactive: inactive
+key.trans.edit: edit
+key.trans.delete: delete
+key.trans.cancel: cancel
+key.trans.save: save
+key.trans.save_close: 'save and close'
+key.trans.new: new
+key.trans.title: title
+key.trans.id: id
+key.trans.name: name
+key.trans.path: path
+key.trans.type: type
+key.trans.order_by: 'order by'
+key.trans.created_by: 'created by'
+key.trans.updated_by: 'updated by'
+key.trans.roles: roles
+key.trans.color: color
+key.trans.is_active: 'is active'
+key.trans.icon: icon
+key.trans.module: module
+key.trans.is_alone_view: 'the field is only to see related fields'
+key.trans.actions: actions
+key.trans.level: level
+key.trans.level_name: 'level name'
+key.trans.method: method
+key.trans.controller: controller
+key.trans.email: email
+key.trans.username: username
+key.trans.languaje: languaje
+key.trans.back: back
+key.trans.expand: expand
+key.trans.reload: reload
+key.trans.minus: minus
+key.trans.close: close
+key.trans.reset: reset
+key.trans.duplicate: duplicate
+key.trans.main_action: 'main action'
+key.trans.slogan: 'generic admin'
+key.trans.forgot_password: 'Did you forget your password?'
+key.trans.enviroment: enviroment
+key.trans.client: client
+key.trans.code: code
+key.trans.application: application
+key.trans.response: response
+key.trans.authentication: authentication
+key.trans.hierarchy: hierarchy
+sku: sku
+stock: stock
+price: price
+special_price: special price
+status: status
+updated: updated
+id: id
+'no defined': 'no defined'
+code: code
+name: name
+active: active
+Identificador: Identificador
+Título: Título
+'Fecha inscripción': 'Fecha inscripción'
+Sede: Sede
+Estado: Estado
+enviroment: enviroment
+main_action: main_action
+path: path
+order_by: order_by
+module: module
+parent: parent
+action: action
+expiro: expiro
+activo: activo
+key.trans.success: success
+key.trans.error: error
+key.trans.notification.comment_created: comment_created
+key.trans.notification.comment_created.description: description
+key.trans.general.dashboard: dashboard
+columns: columns
+export: export
+'export rows': 'export rows'
+Aplicaciones: aplicaciones
+authorization: authorization
+delete: delete
+label: label
+input: input
+type: type
+connector: connector
+client: client
+attribute: attribute
+key.trans.reference: reference
+key.trans.invoice: invoice
+key.trans.price: price
+key.trans.customer: customer
+key.trans.status: status
+ord: ord
+key.trans.section: section
+key.trans.token: token
+key.trans.order: orden
+key.trans.items: items
+key.trans.dni: dni
+key.trans.site: site

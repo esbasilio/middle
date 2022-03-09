@@ -1,0 +1,141 @@
+key.trans.login: 'iniciar sesión'
+key.trans.welcome: bienvenido
+key.trans.logout: 'Cerrar sessión'
+key.trans.username_email: 'Usuario / Email'
+key.trans.password: contraseña
+key.trans.remember_me: 'recordar credenciales'
+key.trans.hello: 'hola, {full_name}!'
+key.trans.system: sistema
+key.trans.config_person: 'configuración person'
+key.trans.config_general: 'configuración general'
+key.trans.config_title: 'config title'
+key.trans.keyword: keyword
+key.trans.notifications: notificaciones
+key.trans.view_more: 'ver más'
+key.trans.settings: configuraciones
+key.trans.advanced: avanzado
+key.trans.navigation: navegación
+key.trans.is_login: 'Estas logueado como {username}!'
+key.trans.languaje_request: 'lenguaje requerido'
+key.trans.comment_created: 'comentario creado'
+key.trans.description: descripción
+key.trans.support: soporte
+key.trans.parent: padre
+key.trans.user_profile: 'perfil de usuario'
+key.trans.user_impersonation: 'usurpar usuario'
+key.trans.exit_impersonation: 'salir usurpado'
+key.trans.impersonator_user: 'usurpar usuario: {data}'
+key.trans.dashboard: dashboard
+key.trans.route: ruta
+key.trans.role: role
+key.trans.action: acción
+key.trans.is_active: activo
+key.trans.is_inactive: inactivo
+key.trans.edit: editar
+key.trans.delete: eliminar
+key.trans.cancel: cancelar
+key.trans.save: guardar
+key.trans.save_close: 'guardar y salir'
+key.trans.new: nuevo
+key.trans.title: título
+key.trans.id: id
+key.trans.roles: roles
+key.trans.created_by: 'creado por'
+key.trans.name: nombre
+key.trans.color: color
+key.trans.icon: icono
+key.trans.module: módulo
+key.trans.is_alone_view: 'solo para ver campos relacionado'
+key.trans.actions: acciones
+key.trans.path: path
+key.trans.level: nivel
+key.trans.level_name: 'nombre nivel'
+key.trans.method: método
+key.trans.controller: control
+key.trans.email: email
+key.trans.username: username
+key.trans.languaje: languaje
+key.trans.back: atrás
+key.trans.expand: expandir
+key.trans.reload: recargar
+key.trans.minus: minus
+key.trans.close: cerrar
+key.trans.reset: resetear
+key.trans.duplicate: duplicar
+key.trans.type: tipo
+key.trans.main_action: 'accion principal'
+key.trans.order_by: 'ordenar por'
+key.trans.slogan: IMM
+key.trans.forgot_password: '¿ Olvidaste tu contraseña ?'
+key.trans.enviroment: ambiente
+key.trans.client: cliente
+key.trans.code: código
+key.trans.application: aplicación
+key.trans.response: respuesta
+key.trans.authentication: autenticación
+key.trans.hierarchy: jerarquía
+key.trans.sku: sku
+key.trans.stock: stock
+key.trans.price: precio
+key.trans.special_price: 'precio especial'
+key.trans.status: estado
+key.trans.updated: actualizado
+key.trans.in: entrada
+key.trans.out: salida
+'no defined': 'No Definido'
+'Does not expire': 'No Caduca'
+id: id
+code: código
+name: nombre
+active: activo
+Estado: estado
+enviroment: ambiente
+main_action: 'acción principal'
+path: path
+order_by: 'ordenar por'
+module: módulo
+parent: padre
+action: acción
+expiro: expiró
+activo: activo
+key.trans.success: 'registro guardado con éxito'
+key.trans.error: error
+key.trans.notification.comment_created: notificación
+key.trans.notification.comment_created.description: notificación
+'Relacion de categorias por Aplicacion': 'relación de categorías por aplicación'
+'refresh token': 'refrescar token'
+scope: alcance
+'expires in': 'expira en'
+status: estado
+authorization: autorización
+delete: eliminar
+application: aplicación
+client: cliente
+attribute: atributo
+value: valor
+key.trans.general.dashboard: dashboard
+'mapping value': 'mapeo de valor'
+label: label
+created: creado
+updated: actualizado
+Valor: valor
+Code: código
+columns: columnas
+export: exportar
+'export rows': 'export rows'
+Aplicaciones: Aplicaciones
+input: entrada
+type: tipo
+connector: conector
+key.trans.reference: referencia
+key.trans.invoice: factura
+key.trans.customer: cliente
+ord: ord
+key.trans.section: sección
+key.trans.token: token
+key.trans.order: orden
+key.trans.items: items
+key.trans.dni: dni
+key.trans.site: sitio
+'Search': 'Buscar'
+'Clean': 'Limpiar'

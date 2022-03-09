@@ -1,0 +1,47 @@
+version: 0.2
+
+env:
+  parameter-store:
+    ID_RSA: "/PROD/SSH_KEY"
+  variables:
+    WEB_IMAGE_REPO_NAME: "middleware"
+    AWS_DEFAULT_REGION: "us-east-1"
+    AWS_ACCOUNT_ID: "989429664884"
+    TERRAFORM_ZIP: "terraform_0.14.7_linux_amd64.zip"
+  shell: bash
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+    commands:
+      - apt update -y
+      - apt install -y unzip zip curl
+      - wget https://releases.hashicorp.com/terraform/0.14.7/$TERRAFORM_ZIP
+      - unzip $TERRAFORM_ZIP -d /usr/local/bin
+      - chmod +x /usr/local/bin/terraform
+      - rm $TERRAFORM_ZIP
+      - mkdir -p ~/.ssh
+      - echo "$ID_RSA" > ~/.ssh/id_rsa
+      - chmod 600 ~/.ssh/id_rsa
+      - eval `ssh-agent`
+      - ssh-add  ~/.ssh/id_rsa
+  
+  build:
+    commands:
+      - git clone git@github.com:juan-nonfreelancers/vtw_terraform_modules.git
+      - source codebuild.txt
+      - cd vtw_terraform_modules
+      - git fetch --all
+      - git checkout middleware
+      - sed -i "s|##ECR_REPOSITORY##|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$WEB_IMAGE_REPO_NAME:$TAG|" middleware/main.tf
+      - cd middleware
+      - terraform init
+      - terraform validate
+      - terraform plan
+      - terraform apply -auto-approve
+
+artifacts:
+  type: "zip"
+  files:
+    - "**/*"

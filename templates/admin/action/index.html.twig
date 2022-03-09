@@ -1,0 +1,208 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block content %}
+	<div class="card card-custom">
+        <div class="card-header">
+            <div class="card-title">
+                <h3 class="card-label">
+                    {{ view.module.name|upper }}
+                </h3>
+            </div>
+            <div class="card-toolbar">
+            	<div class="input-group input-group-sm input-group-solid mr-2"  style="width: 300px;">
+					<input type="text" class="form-control pl-4 global_filter" placeholder="Search..." data-toggle="global_filter">
+					<div class="input-group-append">
+                        <button data-toggle="global_clean_filter" class="btn btn-secondary">
+                            <i class="flaticon2-delete text-black-50"></i>
+                        </button>
+                    </div>
+				</div>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="card-toolbar mr-2">
+                        <div class="dropdown dropdown-inline">
+                            <a type="button" class="btn btn-secondary btn-sm font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="la la-download"></i>{{ 'export'|trans|title }}</a>
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="navi flex-column navi-hover py-2">
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">{{ 'export rows'|trans|title }}</li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-table="export_print">
+                                            <span class="navi-icon">
+                                                <i class="la la-print"></i>
+                                            </span>
+                                            <span class="navi-text">Print</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-table="export_copy">
+                                            <span class="navi-icon">
+                                                <i class="la la-copy"></i>
+                                            </span>
+                                            <span class="navi-text">Copy</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-table="export_csv">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-text-o"></i>
+                                            </span>
+                                            <span class="navi-text">CSV</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path(view.routes['new'].path) }}" class="btn btn-icon btn-primary btn-sm" title="{{ view.routes['new'].name|title }}">
+                        <i class="ki ki-plus icon-1x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+		<div class="card-body">
+            <table class="table table-separate table-head-custom table-checkable compact" data-table="ajax" id="datatable-{{ random(10, 99) }}" token="data-table-{{ random(10, 99) }}">
+                <thead>
+                    <tr>
+                        <th class="text-nowrap">{{ "#"|title }}</th>
+                        <th class="text-nowrap text-center">{{ "key.trans.icon"|trans|title }}</th>
+                        <th class="text-nowrap text-center">{{ "key.trans.color"|trans|title }}</th>
+                        <th class="text-nowrap text-center">{{ "key.trans.code"|trans|title }}</th>
+                        <th class="text-nowrap text-center">{{ "key.trans.name"|trans|title }}</th>
+                        <th class="text-nowrap text-center">{{ "key.trans.path"|trans|title }}</th>
+                        <th class="text-nowrap text-center">{{ "key.trans.view"|trans|title }}</th>
+                        <th data-orderable="false"></th>
+                    </tr>
+                </thead>
+            </table>
+
+            {% include "admin/ui/modal/prototype.html.twig"
+                with {
+                    modal: { type : 'ajax', size : 'lg' }
+                }
+            %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        var initTableAjax = function() {
+            var tableajax = $('table[data-table=ajax]');
+            tableajax.DataTable({
+                responsive: true,
+                paging    : true,
+                pagingType: 'full_numbers',
+                colReorder: true,
+                dom: 
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
+                lengthMenu: [10, 25, 50],
+                pageLength: 10,
+                language: {
+                    'lengthMenu': 'Display _MENU_',
+                    "zeroRecords": "Nothing found - sorry",
+                    "infoEmpty": "No records available",
+                },
+                buttons: [
+                    'print',
+                    'copyHtml5',
+                    'csvHtml5'
+                ],
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: `${_HOST}/api/v1/action/list`,
+                    type: 'POST',
+                    headers: {
+                        'X-AUTH-TOKEN': _USERTOKEN
+                    },
+                    data: {
+                        user_id: _USERID
+                        // pagination: { perpage: 50, },
+                        // columnsDef: [ "name", "stock", "price", "special_price", 'status'],
+                    },
+                },
+                columns: [
+                    {name:"a.id", title: "#", data: 'id', class: "text-center valign-middle"},
+                    {name:"a.icon", data: 'icon', class: "text-center valign-middle"},
+                    {name:"a.color", data: 'color', class: "text-center valign-middle"},
+                    {name:"a.code", data: 'code', class: "text-center valign-middle"},
+                    {name:"a.name", data: 'name', class: "text-center valign-middle"},
+                    {name:"a.path", data: 'path', class: "text-center valign-middle"},
+                    {name:"a.view_type", data: 'view_type', class: "text-center valign-middle"},
+                    {name:"action", data: 'id', width:"1%"}
+                ],
+                columnDefs: [
+                    {
+                        targets: 1,
+                        title: 'icon',
+                        class: "text-center valign-middle",
+                        orderable: true,
+                        render: function(data, type, full, meta) {
+                            return Datatables.render_cel("icon",full);
+                        }
+                    },
+                    {
+                        targets: 2,
+                        title: 'color',
+                        class: "text-center valign-middle",
+                        orderable: true,
+                        render: function(data, type, full, meta) {
+                            return Datatables.render_cel("color",full);
+                        }
+                    },
+                    {
+                        targets: -1,
+                        title: 'Actions',
+                        class: "text-center",
+                        orderable: false,
+                        render: function(data, type, full, meta) {
+                            var token = `{{ csrf_token("delete") }}`;
+                            return `
+                                <div class="row">
+                                    ${Datatables.actions([_VIEW.routes.edit, _VIEW.routes.delete], full, token)}
+                                </div>
+                            `;
+                        },
+                    }
+                ]
+            });
+
+            // FILTRADO
+            $('input[data-toggle=global_filter]').on('keypress', function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if(keycode == '13'){
+                    tableajax.DataTable().search($(this).val()).draw();
+                }
+            } );
+
+            // CLEAR FILTER
+            $('button[data-toggle=global_clean_filter]').on('click', function(e) {
+                e.preventDefault();
+                tableajax.DataTable().search('').draw();
+                $('input[data-toggle=global_filter]').val('');
+            });
+
+            // EXPORT
+            $('a[data-table=export_print]').on('click', function(e) {
+                e.preventDefault();
+                tableajax.DataTable().button(0).trigger();
+            });
+
+            $('a[data-table=export_copy]').on('click', function(e) {
+                e.preventDefault();
+                tableajax.DataTable().button(1).trigger();
+            });
+
+            $('a[data-table=export_csv]').on('click', function(e) {
+                e.preventDefault();
+                tableajax.DataTable().button(2).trigger();
+            });
+        
+        };
+
+        jQuery(document).ready(function() {
+            initTableAjax();
+        });
+    </script>
+{% endblock %}

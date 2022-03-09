@@ -1,0 +1,24 @@
+admin_product-history_index:
+    path:       /
+    controller: 'App\Controller\Admin\ProductHistoryController::list'
+    methods:    GET
+
+admin_product-history_list:
+    path:       /list
+    controller: 'App\Controller\Admin\ProductHistoryController::list'
+    methods:    GET
+
+admin_product-history_new:
+    path:       /form
+    controller: 'App\Controller\Admin\ProductHistoryController::form'
+    methods:    GET|POST
+
+admin_product-history_edit:
+    path:       /form/{id}
+    controller: 'App\Controller\Admin\ProductHistoryController::form'
+    methods:    GET|POST
+
+admin_product-history_delete:
+    path:       /delete/{id}
+    controller: 'App\Controller\Admin\ProductHistoryController::delete'
+    methods:    DELETE

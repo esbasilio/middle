@@ -1,0 +1,4 @@
+api_attribute_list:
+    path:       /list
+    controller: 'App\Controller\Api\V1\AttributeController::list'
+    methods:    GET|POST

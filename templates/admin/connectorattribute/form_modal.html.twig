@@ -1,0 +1,216 @@
+<div class="modal-header">
+    <h5 class="modal-title" >{{ view.module.name|upper }}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body" style="height: 400px;">
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-12 col-lg-6">
+            {{ form_row(form.attribute) }}
+        </div>
+        <div class="col-md-12 col-lg-6">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-md-12 col-lg-6">
+            {{ form_row(form.code) }}
+        </div>
+        <div class="col-md-12 col-lg-6">
+            {{ form_row(form.reference_id) }}
+        </div>
+        <div class="col-md-12 col-lg-6">
+            {{ form_row(form.connector) }}
+        </div>
+    </div>
+    <div class="row">
+        <span class="switch col-md-2 col-lg-4">
+            <label>
+                {{ form_widget(form.auto_save_attribute_value) }}
+                <span></span>
+            </label>
+        </span>
+    </div>
+    <div class="separator separator-dashed my-10"></div>
+    <h3 class="text-dark font-weight-bold">{{ "set de atributos"|capitalize }}:</h3>
+    {{ form_errors(form.connector_attribute_sets) }}
+    <table class="table table-sm connector_attribute_sets m-t-10" data-prototype="{{ _self.service_template_attr_set(form.connector_attribute_sets.vars.prototype)|e('html_attr') }}">
+        <thead>
+            <tr>
+                <th>{{ "set"|title }}</th>
+                <th>{{ "requerido"|title }}</th>
+                <th>{{ "variación"|title }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for as in form.connector_attribute_sets %}
+            <tr>
+                <td style="width: 20%">{{ form_widget(as.attribute_set) }}</td>
+                <td>{{ form_widget(as.is_required) }}</td>
+                <td>{{ form_widget(as.is_variation) }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="separator separator-dashed my-10"></div>
+    <h3 class="text-dark font-weight-bold">{{ "valores del atributo"|capitalize }}:</h3>
+    {# {% if entity.id is defined and entity.id is not null and entity.connector.application.strategy == 'magento_23' %}
+        <div class="btn-group">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sincronización</button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{ url('admin_connector-attribute_search',{con_attr_id: entity.id}) }}">Sync Atributos</a>
+            </div>
+        </div>
+    {% endif %} #}
+    {# <a href="{{ url('admin_connector-attribute_search',{con_attr_id: entity.id}) }}" class="btn btn-secondary font-weight-bold">Sync Atributos</a> #}
+    {{ form_errors(form.attribute_values) }}
+    <table class="table table-sm attribute_values m-t-10" data-prototype="{{ _self.service_template(form.attribute_values.vars.prototype)|e('html_attr') }}">
+        <thead>
+            <tr>
+                <th>{{ "Valor"|title }}</th>
+                <th>{{ "Nombre"|title }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for app in form.attribute_values %}
+            <tr>
+                <td style="width: 20%">{{ form_widget(app.value) }}</td>
+                <td>{{ form_widget(app.name) }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{{ form_end(form) }}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal" >Close</button>
+    <button type="button" id="submitModalForm" class="btn btn-primary font-weight-bold mr-2">Guardar</button>
+</div>
+
+{% macro service_template(fields) %}
+    <td style="width: 20%">{{ form_widget(fields.value) }}</td>
+    <td>{{ form_widget(fields.name) }}</td>
+{% endmacro %}
+
+{% macro service_template_attr_set(fields) %}
+    <td style="width: 20%">{{ form_widget(fields.attribute_set) }}</td>
+    <td>{{ form_widget(fields.is_required) }}</td>
+    <td>{{ form_widget(fields.is_variation) }}</td>
+{% endmacro %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        var $addPhone = $('<td colspan="3"><button type="button" class="btn btn-primary btn-sm btn-block"><i class="fas fa-plus"></i>Nuevo Registro</button></td>');
+        var $linPhone = $('<tr></tr>').append($addPhone);
+
+        var $add_attr_set = $('<td colspan="4"><button type="button" class="btn btn-primary btn-sm btn-block"><i class="fas fa-plus"></i>Nuevo Registro</button></td>');
+        var $lin_attr_set = $('<tr></tr>').append($add_attr_set);
+        var listAttribute = [];
+
+        $(document).ready(function() {
+            var $collectionPhone = $('table.attribute_values');
+            callAttributes($('#client_attribute_attribute').val());
+            collection($collectionPhone,$addPhone,$linPhone);
+            $('.selectpicker').selectpicker('refresh');
+            var $attribute = $('#client_attribute_attribute');
+            $attribute.change(function() {
+                $('[data-id="mapping_value"]').children().remove();
+                callAttributes($attribute.val());
+            });
+
+            // ATTRIBUTE SET
+            var $col_attr_set = $('table.connector_attribute_sets');
+            // callAttributes($('#client_attribute_attribute').val());
+            collection($col_attr_set,$add_attr_set,$add_attr_set);
+            $('.selectpicker').selectpicker('refresh');
+            $('[data-switch=true]').bootstrapSwitch();
+            var $attribute = $('#client_attribute_attribute');
+            $attribute.change(function() {
+                $('[data-id="mapping_value"]').children().remove();
+                callAttributes($attribute.val());
+            });
+        });
+
+        function collection($collection,$button,$link) {
+            $collection.find('tbody>tr').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+            $collection.append($link);
+            $collection.data('index', $collection.find(':input').length);
+
+            $button.on('click', function(e) {
+                addTagForm($collection, $link);
+            });
+        }
+
+        function addTagForm($collectionHolder, $newLinkLi) {
+            var prototype = $collectionHolder.data('prototype');
+
+            var index = $collectionHolder.data('index');
+            var newForm = prototype;
+            newForm = newForm.replace(/__name__/g, index);
+
+            $collectionHolder.data('index', index + 1);
+            var $newFormLi = $('<tr></tr>').append(newForm);
+            addTagFormDeleteLink($newFormLi);
+            $newLinkLi.before($newFormLi);
+
+            callAttributes($('#client_attribute_attribute').val());
+            $('.selectpicker').selectpicker('refresh');
+            $('[data-switch=true]').bootstrapSwitch();
+
+        }
+
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormButton = $('<td class="align-middle" style="width: 5%"><button type="button" class="btn btn-xs btn-hover-danger btn-icon"><i class="fas fa-trash-alt"></i></button></td>');
+            $tagFormLi.append($removeFormButton);
+
+            $removeFormButton.on('click', function(e) {
+                $tagFormLi.remove();
+            });
+        }
+
+        function callAttributes($attribute) {
+            $url_base = `${$(location).attr('protocol')}//${$(location).attr('host')}`;
+            if ($attribute) {
+                $.ajax({
+                    url : `${$url_base}/api/v1/product/attribute/${$attribute}`,
+                    type: 'get',
+                    success: function(json) {
+                        console.log(json);
+                        listAttribute = json['value'];
+                        addAttributeValues(listAttribute);
+                        $('.selectpicker').selectpicker('refresh');
+                    }
+                });
+            }
+        }
+
+        function addAttributeValues($values) {
+            $('[data-id="mapping_value"]').each(function(){
+                var input = $(this); 
+                if (input.find('option').length == 0) {
+                    $values.forEach(function(value, index) {
+                        if (input.attr('data') == value || input.val() == value) {
+                            input.prepend(`<option value="${value}" selected>${value}</option>`);    
+                        }else{
+                            input.prepend(`<option value="${value}">${value}</option>`);
+                        }
+                    });
+                }
+
+                var map = {}; 
+                input.find('option').each(function(index,element){ 
+                    var value = element.value; 
+                    if (map[value] == null){ 
+                        map[value] = true; 
+                    } else { 
+                        element.remove(); 
+                    } 
+                });
+            });
+        }
+    </script>
+{% endblock %}

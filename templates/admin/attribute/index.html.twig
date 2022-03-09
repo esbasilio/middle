@@ -1,0 +1,199 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block content %}
+	<div class="card card-custom">
+        <div class="card-header">
+            <div class="card-title">
+                {# <span class="card-icon">
+                    <i class="flaticon2-chat-1 text-primary"></i>
+                </span> #}
+                <h3 class="card-label">
+                    {{ view.module.name|upper }}
+                    {# <small>sub title</small> #}
+                </h3>
+            </div>
+            <div class="card-toolbar">
+            	<div class="input-group input-group-sm input-group-solid mr-2"  style="width: 300px;">
+					<input type="text" class="form-control pl-4 global_filter" placeholder="Search..." data-toggle="global_filter">
+					<div class="input-group-append">
+                        <button data-toggle="global_clean_filter" class="btn btn-secondary">
+                            <i class="flaticon2-delete text-black-50"></i>
+                        </button>
+                    </div>
+				</div>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="card-toolbar mr-2">
+                        {# <div class="dropdown dropdown-inline mr-2">
+                            <a class="btn btn-secondary btn-sm font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="la la-columns"></i>{{ 'columns'|trans|title }}</a>
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="navi flex-column navi-hover py-2 navi-active navi-accent">
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Cols. Habilitadas</li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-toggle="column-vis" data-column="1" data-visible="true">
+                                            <span class="navi-text">Column 1</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-toggle="column-vis" data-column="2" data-visible="true">
+                                            <span class="navi-text">Column 2</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-toggle="column-vis" data-column="3" data-visible="true">
+                                            <span class="navi-text">Column 3</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-toggle="column-vis" data-column="4" data-visible="true">
+                                            <span class="navi-text">Column 4</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-toggle="column-vis" data-column="5" data-visible="true">
+                                            <span class="navi-text">Column 5</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div> #}
+                        <div class="dropdown dropdown-inline">
+                            <a type="button" class="btn btn-secondary btn-sm font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="la la-download"></i>{{ 'export'|trans|title }}</a>
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="navi flex-column navi-hover py-2">
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">{{ 'export rows'|trans|title }}</li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-table="export_print">
+                                            <span class="navi-icon">
+                                                <i class="la la-print"></i>
+                                            </span>
+                                            <span class="navi-text">Print</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-table="export_copy">
+                                            <span class="navi-icon">
+                                                <i class="la la-copy"></i>
+                                            </span>
+                                            <span class="navi-text">Copy</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-table="export_csv">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-text-o"></i>
+                                            </span>
+                                            <span class="navi-text">CSV</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path(view.routes['new'].path) }}" class="btn btn-icon btn-primary btn-sm" title="{{ view.routes['new'].name|title }}">
+                        <i class="ki ki-plus icon-1x"></i>
+                        {# {{ view.routes['new'].name|title }} #}
+                    </a>
+                </div>
+            </div>
+        </div>
+		<div class="card-body">
+            {% include 'admin/ui/table/basic.html.twig' with 
+                {
+                    table:{
+                        collection : response,
+                        columns : [
+                            {   
+                                thead:{
+                                    value : 'key.trans.code'|trans,
+                                    class : '',
+                                    style : '',
+                                    attr  : ''
+                                },
+                                tbody:{
+                                    value : 'code',
+                                    type  : 'text',
+                                    class : 'text-center',
+                                    style : '',
+                                    attr  : ''
+                                }
+                            },
+                            {   
+                                thead:{
+                                    value : 'label'|trans,
+                                    class : '',
+                                    style : '',
+                                    attr  : ''
+                                },
+                                tbody:{
+                                    value : 'label',
+                                    type  : 'text',
+                                    class : 'text-center',
+                                    style : '',
+                                    attr  : ''
+                                }
+                            },
+                            {   
+                                thead:{
+                                    value : 'input'|trans,
+                                    class : '',
+                                    style : '',
+                                    attr  : ''
+                                },
+                                tbody:{
+                                    value : 'inputType',
+                                    type  : 'text',
+                                    class : 'text-center',
+                                    style : '',
+                                    attr  : ''
+                                }
+                            },
+                            {   
+                                thead:{
+                                    value : 'type'|trans,
+                                    class : '',
+                                    style : '',
+                                    attr  : ''
+                                },
+                                tbody:{
+                                    value : 'type',
+                                    type  : 'text',
+                                    class : 'text-center',
+                                    style : '',
+                                    attr  : ''
+                                }
+                            },
+                            {   
+                                thead:{
+                                    value : 'key.trans.action'|trans,
+                                    class : '',
+                                    style : '',
+                                    attr  : 'width=1%'
+                                },
+                                tbody:{
+                                    value : {
+                                        edit : view.routes['edit'],
+                                        delete : view.routes['delete'],
+                                    },
+                                    type  : 'botton',
+                                    class : 'text-center with-btn',
+                                    style : '',
+                                    attr  : ''
+                                }
+                            }
+                        ]
+                    }
+                }
+            %}
+
+            {% include "admin/ui/modal/prototype.html.twig"
+                with {
+                    modal: { type : 'ajax', size : 'md' }
+                }
+            %}
+		</div>
+	</div>
+{% endblock %}
+
+

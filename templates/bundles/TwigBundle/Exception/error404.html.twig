@@ -1,0 +1,14 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <div class="d-flex flex-column flex-root" style="background-image: url({{ asset('build/media/admin/error/bg1.jpg') }});">
+        <div class="d-flex flex-row-fluid flex-column bgi-size-cover bgi-position-center bgi-no-repeat p-10 p-sm-30">
+            <h1 class="font-weight-boldest text-dark-75 mt-15" style="font-size: 10rem">404</h1>
+
+            <p class="font-size-h3 text-muted font-weight-normal">
+                OOPS! Something went wrong here. <br>
+                <a href="{{ path('admin_home_index') }}">Back to the homepage</a>.
+            </p>
+        </div>
+    </div>
+{% endblock %}

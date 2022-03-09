@@ -1,0 +1,4 @@
+api_home_index:
+    path: /
+    defaults: { _controller: App\Controller\Api\V1\HomeController::index }
+    methods:    GET

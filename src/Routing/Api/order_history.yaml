@@ -1,0 +1,4 @@
+api_order-history_list:
+    path:       /list
+    controller: 'App\Controller\Api\V1\OrderHistoryController::list'
+    methods:    GET|POST

@@ -1,0 +1,602 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block content %}
+	<div class="card card-custom">
+        <div class="card-header">
+            <div class="card-title">
+                {# <span class="card-icon">
+                    <i class="flaticon2-chat-1 text-primary"></i>
+                </span> #}
+                <h3 class="card-label">
+                    {{ view.module.name|title }}
+                    {# <small>sub title</small> #}
+                </h3>
+            </div>
+            <div class="card-toolbar">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="card-toolbar mr-2">
+                        {# <div class="dropdown dropdown-inline mr-2">
+                            <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="svg-icon svg-icon-md">
+                                    <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Design/PenAndRuller.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24"></rect>
+                                            <path d="M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z" fill="#000000" opacity="0.3"></path>
+                                            <path d="M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z" fill="#000000"></path>
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>{{ 'Actions'|trans|title }}</button>
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="navi flex-column navi-hover py-2">
+                                    <li class="navi-item">
+                                        <a id="product_bulk_edit_open" href="#" class="navi-link" data-toggle="modal-ajax">
+                                            <span class="navi-icon">
+                                                <i class="la la-box"></i>
+                                            </span>
+                                            <span class="navi-text">Editar</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div> #}
+                        <div class="dropdown dropdown-inline mr-2">
+                            <a type="button" class="btn btn-secondary btn-sm font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="la la-download"></i>{{ 'export'|trans|title }}</a>
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="navi flex-column navi-hover py-2">
+                                    {# <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">{{ 'export rows'|trans|title }}</li> #}
+                                    {# <li class="navi-item">
+                                        <a href="#" class="navi-link" data-table="export_print">
+                                            <span class="navi-icon">
+                                                <i class="la la-print"></i>
+                                            </span>
+                                            <span class="navi-text">Print</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-table="export_copy">
+                                            <span class="navi-icon">
+                                                <i class="la la-copy"></i>
+                                            </span>
+                                            <span class="navi-text">Copy</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-table="export_csv">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-text-o"></i>
+                                            </span>
+                                            <span class="navi-text">CSV</span>
+                                        </a>
+                                    </li> #}
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" data-toggle="modal" data-target="#modal-dialog-product-stock-meli">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-text-o"></i>
+                                            </span>
+                                            <span class="navi-text">Exportar stock Mercadolibre</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" id="product-stock-middle__submit">
+                                        {#data-toggle="modal" data-target="#modal-dialog-product-stock-middle-magento">#}
+                                            <span class="navi-icon">
+                                                <i class="la la-file-text-o"></i>
+                                            </span>
+                                            <span class="navi-text">Exportar stock Middleware</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="card-body">
+
+            <form class="mb-15">
+                <div class="row mb-6">
+                    <div class="col-lg-3 mb-lg-0 mb-6">
+                        <label class="font-weight-bolder">SKU:</label>
+                        <input type="text" class="form-control datatable-input" placeholder="E.g: EA054657" data-col-index="1">
+                    </div>
+                    <div class="col-lg-3 mb-lg-0 mb-6">
+                        <label class="font-weight-bolder">Status:</label>
+                        <select class="form-control datatable-input selectpicker" data-col-index="6">
+                            <option></option>
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 mb-lg-0 mb-6">
+                        <label class="font-weight-bolder">Grupo de atributos:</label>
+                        <select class="form-control datatable-input selectpicker" data-col-index="2">
+                            <option></option>
+                            <option value="isnull">Indefinido</option>
+                            {% for attribute_set in product_attributes_set %}
+                                <option value="{{ attribute_set.id }}">{{ attribute_set.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3 mb-lg-0 mb-6">
+                        <label class="font-weight-bolder">Conector:</label>
+                        <select id="connector" class="form-control datatable-input selectpicker" data-col-index="3">
+                            <option></option>
+                            <option value="isnull">Indefinido</option>
+                            {% for conn in connectors %}
+                                <option value="{{ conn.id }}">{{ conn.code }} - {{ conn.application.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
+                <div class="row mt-8">
+                    <div class="col-lg-12">
+                        <button class="btn btn-light-primary btn-primary--icon mr-2" data-toggle="global_filter">
+                            <span>
+                                <i class="la la-search"></i>
+                                <span>Buscar</span>
+                            </span>
+                        </button>
+                        <button class="btn btn-secondary btn-secondary--icon" data-toggle="global_clean_filter">
+                            <span>
+                                <i class="la la-close"></i>
+                                <span>Limpiar</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mt-10 mb-5 collapse" id="datatable_group_action_form" style="">
+                <div class="d-flex align-items-center">
+                    <div class="font-weight-bold mr-3">Seleccionados 
+                    <span id="datatable_selected_records">2</span> items:</div>
+                    <div class="dropdown mr-2">
+                        <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Actions'|trans|title }}</button>
+                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                            <ul class="nav flex-column nav-hover py-2">
+                                <li class="nav-item">
+                                    <a id="product_bulk_edit_open" href="#" class="nav-link" data-toggle="modal-ajax">
+                                        <span class="nav-icon">
+                                            <i class="la la-box"></i>
+                                        </span>
+                                        <span class="nav-text">Editar</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="product_bulk_add_connector" href="#" class="nav-link" data-toggle="modal-ajax">
+                                        <span class="nav-icon">
+                                            <i class="la la-box"></i>
+                                        </span>
+                                        <span class="nav-text">{{ 'Asign to connector'|trans }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn btn-sm btn-link mr-2" type="button" id="datatable_reset_selection">Deseleccionar todo</button>
+                </div>
+            </div>
+
+            <table class="table table-separate table-head-custom table-checkable compact" data-table="ajax" id="product_list_table">
+                <thead>
+                    <tr>
+                        <th class="text-nowrap">{{ "#" }}</th> 
+                        <th class="text-nowrap text-left">{{ "SKU" }}</th>
+                        <th class="text-nowrap text-center">{{ "Grupo Atr."|title }}</th> 
+                        <th class="text-nowrap text-center">{{ "Connector."|title }}</th> 
+                        <th class="text-nowrap text-center">{{ "Stock"|title }}</th>
+                        <th class="text-nowrap text-center">{{ "Precio"|title }}</th>
+                        <th class="text-nowrap text-center">{{ "Vars"|title }}</th>
+                        <th class="text-nowrap text-center">{{ "Status"|title }}</th>
+                        <th class="text-nowrap text-center">{{ "Actualizado"|title }}</th>
+                        <th width="1%" data-orderable="false"></th>
+                    </tr>
+                </thead>
+            </table>
+		</div>
+	</div>
+    {% include "admin/ui/modal/prototype.html.twig" with { modal: { type : 'ajax', size : 'xl' } } %}
+
+    {# modal export product stock meli #}
+    <div class="modal fade" id="modal-dialog-product-stock-meli" tabindex="-1" role="dialog" aria-labelledby="modal-dialog" aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <label class="font-weight-bolder">Conector:</label>
+                    <select id="modal-dialog-product-stock-meli__connector" class="form-control">
+                        <option></option>
+                        {% for conn in connectors %}
+                            {% if (conn.application.strategy == 'mercado_libre') %}
+                                <option value="{{ conn.id }}">{{ conn.code }} - {{ conn.application.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal" >{{ 'Close'|trans }}</button>
+                    <button type="button" id="modal-dialog-product-stock-meli__submit" class="btn btn-primary font-weight-bold mr-2">{{ 'Download'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {# modal export product stock middle / magento #}
+    <div class="modal fade" id="modal-dialog-product-stock-middle-magento" tabindex="-1" role="dialog" aria-labelledby="modal-dialog" aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <label class="font-weight-bolder">Conector:</label>
+                    <select id="modal-dialog-product-stock-middle-magento__connector" class="form-control">
+                        <option></option>
+                        {% for conn in connectors %}
+                            {% if (conn.application.strategy == 'magento_23') %}
+                                <option value="{{ conn.id }}">{{ conn.code }} - {{ conn.application.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal" >{{ 'Close'|trans }}</button>
+                    <button type="button" id="modal-dialog-product-stock-middle-magento__submit" class="btn btn-primary font-weight-bold mr-2">{{ 'Download'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        var selected = [];
+        var initTableAjax = function() {
+            var tableajax = $('table[data-table=ajax]').DataTable({
+                responsive: true,
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child .checkable',
+                },
+                "order": [[ 0, "desc" ]],
+                paging    : true,
+                pagingType: 'full_numbers',
+                colReorder: true,
+                dom: 
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
+                lengthMenu: [10, 25, 50],
+                pageLength: 10,
+                language: {
+                    'lengthMenu': 'Display _MENU_',
+                    "zeroRecords": "No se encontraron resultados",
+                    "infoEmpty": "No hay resultados",
+                },
+                buttons: [
+                    'print',
+                    'copyHtml5',
+                    'csvHtml5'
+                ],
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: `${_HOST}/api/v1/{{ view.module.path }}/list`,
+                    type: 'POST',
+                    headers: {
+                        'X-AUTH-TOKEN': _USERTOKEN
+                    },
+                    data: {
+                        user_id: _USERID
+                        // pagination: { perpage: 50, },
+                        // columnsDef: [ "name", "stock", "price", "special_price", 'status'],
+                    },
+                },
+                columns: [
+                    {
+                        name:"p.id", 
+                        title:"#", 
+                        data:'id', 
+                        class:"font-weight-bolder",
+                        width: 40,
+                        type: 'number',
+                        defaultContent: '',
+                        textAlign: 'left',
+                    },
+                    {
+                        name:"p.sku", 
+                        title:"Producto", 
+                        data:'sku', 
+                        class:"valign-middle"
+                    },
+                    {
+                        name:"p.attribute_set",
+                        data: function(row, type, set){ return row.attribute_set != null ? row.attribute_set.name : null; },
+                        class: "text-center valign-middle"
+                    },
+                    {
+                        name:"conn.id", 
+                        data: (row, type, set) => {
+                            if (row.connectors != null) {
+                                return row.connectors.map((item) => {
+                                    return item.connector.code;
+                                }).join('<br>');
+                            }
+                        }, 
+                        class: "text-center valign-middle"
+                    },
+                    {name:"p.stock", data: 'stock', class: "text-center valign-middle"},
+                    {name:"p.price", data: 'price', class: "text-center valign-middle"},
+                    {
+                        name:"p.variation",
+                        data: function(row, type, set){
+                            return row.variations.length; 
+                        },
+                        class: "text-center valign-middle"
+                    },
+                    {name:"p.status", data: 'status', class: "text-center valign-middle"},
+                    {
+                        name:"p.updated",
+                        orderable: true,
+                        data: function(row, type, set){
+                            return moment(row.updated.date).format('DD/MM/YYYY h:mm');
+                        },
+                        class: "text-center valign-middle"
+                    },
+                    {name:"action", data:'id'}
+                ],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        responsivePriority: 1,
+                        render: function(data, type, full, meta) {
+                            return `
+                            <label class="checkbox checkbox-single checkbox-primary mb-0">
+                                <input type="checkbox" value="" class="checkable"/>
+                                <span></span>
+                            </label>`;
+                        },
+                    },
+                    {
+                        targets: 1,
+                        orderable: true,
+                        responsivePriority: 1,
+                        render: function(data, type, full, meta) {
+
+                        return `
+                            <span style="width: 250px;">
+                                <div class="d-flex align-items-center">
+                                    ${full.images.length 
+                                        ? `<div class="symbol symbol-40 symbol-circle symbol-sm"><img src="${full.images[0]}"></div>`
+                                        : `<div class="symbol symbol-40 symbol-circle symbol-light-info"><span class="symbol-label font-size-h4">${full.sku.charAt(0).toUpperCase()}</span></div>`
+                                    }
+                                    <div class="ml-3">
+                                        <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">${full.sku}</div>
+                                        <a href="#" class="text-muted font-weight-bold text-hover-primary">${full.name}</a>
+                                    </div>
+                                </div>
+                            </span>
+                        `;
+                        },
+                    },
+                    {
+                        targets: -1,
+                        title: 'Actions',
+                        class: "text-center valign-middle",
+                        orderable: false,
+                        responsivePriority: 1,
+                        render: function(data, type, full, meta) {
+                            return `
+                                <a href="${_HOST}/product/show/${full.id}" class="btn btn-sm btn-clean btn-icon " title="details">
+                                    <i class="flaticon2-pen text-primary"></i>
+                                </a>
+                            `;
+                        },
+                    },
+                    {
+                        targets: -3,
+                        class: "text-center valign-middle",
+                        orderable: false,
+                        render: function(data, type, full, meta) {
+                            var status = {
+                                false: {'title': 'Inactivo', 'class': 'label-light-primary'},
+                                true: {'title': 'Activo', 'class': ' label-light-success'},
+                            };
+                            if (typeof status[data] === 'undefined') {
+                                return data;
+                            }
+                            return '<span class="label label-lg font-weight-bold' + status[data].class + ' label-inline">' + status[data].title + '</span>';
+                        },
+                    },
+                    {
+                        targets: 2,
+                        class: "text-center valign-middle",
+                        orderable: false,
+                        render: function(data, type, full, meta) {
+                            if (data != null) return data;
+                            return '<span class="label label-lg font-weight-bold label-light-danger label-inline"> indefinido </span>';
+                        },
+                    }
+                ],
+                /*headerCallback: function(thead, data, start, end, display) {
+                    thead.getElementsByTagName('th')[0].innerHTML = `
+                        <label class="checkbox checkbox-single checkbox-solid checkbox-primary mb-0">
+                            <input type="checkbox" value="" class="group-checkable"/>
+                            <span></span>
+                        </label>` ;
+                },*/
+                rowCallback: function(row, data) {
+                    if (selected.indexOf(data.id) !== -1) {
+                        $(row).addClass('selected');
+                        
+                        let $checkable = $(row).find('td:first-child .checkable');
+                        $checkable.prop('checked', !$checkable.prop('checked'));
+                    }
+                }
+            });
+
+            $('button[data-toggle=global_filter]').on('click', function(e) {
+                e.preventDefault();
+                var params = {};
+                $('.datatable-input').each(function() {
+                    var i = $(this).data('col-index');
+                    if (params[i]) {
+                        params[i] += '|' + $(this).val();
+                    }
+                    else {
+                        params[i] = $(this).val();
+                    }
+                });
+                $.each(params, function(i, val) {
+                    // apply search params to datatable
+                    tableajax.column(i).search(val ? val : '', false, false);
+                });
+                tableajax.draw();
+            });
+
+            $('button[data-toggle=global_clean_filter]').on('click', function(e) {
+                e.preventDefault();
+                $('.datatable-input').each(function() {
+                    $(this).val('');
+                    tableajax.column($(this).data('col-index')).search('', false, false);
+                });
+                tableajax.draw();
+            });
+
+            // EXPORT
+            $('a[data-table=export_print]').on('click', function(e) {
+                e.preventDefault();
+                tableajax.button(0).trigger();
+            });
+
+            $('a[data-table=export_copy]').on('click', function(e) {
+                e.preventDefault();
+                tableajax.button(1).trigger();
+            });
+
+            $('a[data-table=export_csv]').on('click', function(e) {
+                e.preventDefault();
+                tableajax.button(2).trigger();
+            });
+
+            /*tableajax.on('change', '.group-checkable', function() {
+                var set = $(this).closest('table').find('td:first-child .checkable');
+                var checked = $(this).is(':checked');
+
+                $(set).each(function() {
+                    if (checked) {
+                        $(this).prop('checked', true);
+                        tableajax.rows($(this).closest('tr')).select();
+                    }
+                    else {
+                        $(this).prop('checked', false);
+                        tableajax.rows($(this).closest('tr')).deselect();
+                    }
+                });
+            });*/
+
+
+            tableajax.on('click', '.checkable', (e) => {
+                let $row = $(e.target).closest('tr');
+                let id = parseInt($row.attr('id'));
+                let index = selected.indexOf(id);
+        
+                if ( index === -1 ) {
+                    selected.push(id);
+                } else {
+                    selected.splice(index, 1);
+                }
+                
+                $row.toggleClass('selected');
+
+                // show selected info
+                if (selected.length) {
+                    $('#datatable_group_action_form').show();
+                    $('#datatable_selected_records').html(selected.length);
+                } else {
+                    $('#datatable_group_action_form').hide();
+                }
+            });
+
+            $('#datatable_reset_selection').on('click', (e) => {
+                e.preventDefault();
+                
+                // reset selected rows
+                selected = [];
+
+                $('#datatable_group_action_form').hide();
+                $('#datatable_selected_records').html(0);
+
+                tableajax.rows().deselect();
+                tableajax.draw();
+            });
+
+            $('#modal-dialog-product-stock-meli__submit').on('click', (e) => {
+                e.preventDefault();
+                let connector_id = $('#modal-dialog-product-stock-meli__connector').val();
+                //console.log(connector_id);
+                if(connector_id != ''){
+                    document.location = `${_HOST}/connector/stock/meli/` + connector_id;
+                }
+            })
+
+            //$('#modal-dialog-product-stock-middle-magento__submit').on('click', (e) => {
+            $('#product-stock-middle__submit').on('click', (e) => {
+                e.preventDefault();
+                //let connector_id = $('#modal-dialog-product-stock-middle-magento__connector').val();
+                //if(connector_id != ''){
+                    document.location = `${_HOST}/product/stock/middle/`; // connector_id;
+                //}
+            })
+
+            $('#product_bulk_edit_open').on('click', function(event){
+                event.preventDefault();
+
+                if (selected.length == 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Debe seleccionar al menos un producto!'
+                    })
+
+                    return false;
+                }
+
+                let $this = $(this);
+
+                // base64 encode
+                ids = window.btoa(unescape(encodeURIComponent( selected )));
+
+                $this.attr('data-url', `${_HOST}/product/bulk-edit/${ids}`);
+            });
+
+            $('#product_bulk_add_connector').on('click', function(event){
+                event.preventDefault();
+
+                if (selected.length == 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Debe seleccionar al menos un producto!'
+                    })
+
+                    return false;
+                }
+
+                let $this = $(this);
+
+                // base64 encode
+                ids = window.btoa(unescape(encodeURIComponent( selected )));
+
+                $this.attr('data-url', `${_HOST}/product/bulk-connector-edit/${ids}`);
+            });
+        };
+
+        jQuery(document).ready(function() {
+            initTableAjax();
+        });
+    </script>
+{% endblock %}

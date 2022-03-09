@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h5 class="modal-title" >{{ "Product Bulk Edit"|title }}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body" style="height: 300px;">
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                {{ form_row(form.attribute_set) }}
+            </div>
+            <div class="col-md-12 col-lg-12">
+                {{ form_row(form.status) }}
+            </div>
+        </div>
+    {{ form_end(form) }}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal" >Close</button>
+    <button type="button" id="submitModalForm" class="btn btn-primary font-weight-bold mr-2">Guardar</button>
+</div>

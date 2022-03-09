@@ -1,0 +1,79 @@
+admin_product_index:
+    path:       /
+    controller: 'App\Controller\Admin\ProductController::list'
+    methods:    GET
+
+admin_product_list:
+    path:       /list
+    controller: 'App\Controller\Admin\ProductController::list'
+    methods:    GET
+
+admin_product_new:
+    path:       /form
+    controller: 'App\Controller\Admin\ProductController::form'
+    methods:    GET|POST
+
+admin_product_edit:
+    path:       /form/{id}
+    controller: 'App\Controller\Admin\ProductController::form'
+    methods:    GET|POST
+
+admin_product_bulk_edit:
+    path:       /bulk-edit/{ids}
+    controller: 'App\Controller\Admin\ProductController::bulkEdit'
+    methods:    GET|POST
+
+admin_product_bulk_connector_edit:
+    path:       /bulk-connector-edit/{ids}/{connector?null}
+    controller: 'App\Controller\Admin\ProductController::bulkConnectorEdit'
+    methods:    GET|POST
+
+admin_product_delete:
+    path:       /delete/{id}
+    controller: 'App\Controller\Admin\ProductController::delete'
+    methods:    DELETE
+
+admin_product_show:
+    path:       /show/{id}
+    controller: 'App\Controller\Admin\ProductController::show'
+    methods:    GET
+    defaults:
+        view: 'product'
+
+admin_product_variations-show:
+    path:       /show/variations/{id}
+    controller: 'App\Controller\Admin\ProductController::show'
+    methods:    GET
+    defaults:
+        view: 'variations'
+
+admin_product_maping-show:
+    path:       /show/maping/{id}
+    controller: 'App\Controller\Admin\ProductController::show'
+    methods:    GET
+    defaults:
+        view: 'maping'
+
+admin_product_connectors-show:
+    path:       /show/connectors/{id}
+    controller: 'App\Controller\Admin\ProductController::show'
+    methods:    GET|POST
+    defaults:
+        view: 'connectors'
+
+admin_product_history-show:
+    path:       /show/history/{id}
+    controller: 'App\Controller\Admin\ProductController::show'
+    methods:    GET
+    defaults:
+        view: 'history'
+
+admin_product_sync:
+    path:       /sync/out/{id}/{sku}
+    controller: 'App\Controller\Admin\ProductController::sendProduct'
+    methods:    GET
+
+admin_product_stock_middle:
+    path:       /stock/middle
+    controller: 'App\Controller\Admin\ProductController::productStockMiddleware'
+    methods:    GET

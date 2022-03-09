@@ -1,0 +1,64 @@
+version: 0.2
+ 
+env:
+  parameter-store:
+    ENV_VARS: "/PROD/MIDDLEWARE/ENV"
+  variables:
+    WEB_IMAGE_REPO_NAME: "middleware"
+    AWS_DEFAULT_REGION: "us-east-1"
+    AWS_ACCOUNT_ID: "989429664884"
+  shell: bash
+phases:
+  install:
+    runtime-versions:
+      php: 7.4
+    commands:
+      - curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
+      - apt -y update || apt install ca-certificates # install certificates to fix node problem
+      - apt install -y unzip zip curl
+      - apt install -y --no-install-recommends gnupg
+      - git config --global credential.helper '!aws codecommit credential-helper $@'
+      - git config --global credential.UseHttpPath true
+      - git config --global user.email "ci.cd@25watts.com"
+      - git config --global user.name "gitops operator"
+      - echo 7.4.7 > .php-version
+      - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
+      - apt-get install -y --no-install-recommends nodejs
+      - npm install -g npm && npm i -g grunt-cli && npm i -g @symfony/webpack-encore
+      - echo $ENV_VARS > .env.local.php
+  pre_build:
+    commands:
+      - aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+  build:
+    commands:
+      - php /usr/local/bin/composer install
+      # - php /usr/local/bin/composer dump-env prod
+      - npm install
+      - npm run build
+      # - php bin/console doctrine:schema:update --force
+      - php bin/console --no-interaction doctrine:migrations:migrate
+      - echo build cms image
+      - docker build -t $WEB_IMAGE_REPO_NAME -f Dockerfile .
+      - docker tag $WEB_IMAGE_REPO_NAME $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$WEB_IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker tag $WEB_IMAGE_REPO_NAME $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$WEB_IMAGE_REPO_NAME:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the WEB image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$WEB_IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$WEB_IMAGE_REPO_NAME:latest
+      - echo clone CD project
+      - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/middleware-cd-production
+      - cd middleware-cd-production
+      - echo write codebuild execution version in file
+      - echo TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION > codebuild.txt
+      - git checkout -B master
+      - cp -r ../buildspec .
+      - git add buildspec codebuild.txt
+      - git commit -m "task definition from build $CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - git push -f origin master
+ 
+artifacts:
+ type: "zip"
+ files:
+ - "**/*"

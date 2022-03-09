@@ -1,0 +1,4 @@
+api_action_list:
+    path:       /list
+    controller: 'App\Controller\Api\V1\ActionController::list'
+    methods:    GET|POST

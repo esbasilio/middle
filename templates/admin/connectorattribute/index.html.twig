@@ -1,0 +1,244 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block content %}
+    <div class="card card-custom">
+        <div class="card-header card-header-tabs-line">
+            <div class="card-title">
+                <h3 class="card-label">
+                    {{ view.module|upper }}
+                    {# <span class="d-block text-muted pt-2 font-size-sm">Datatable initialized from HTML table</span> #}
+                </h3>
+            </div>
+            <div class="card-toolbar">
+                <a href="{{ path(view.routes['new'].path) }}" class="btn btn-outline-primary">
+                    <span class="svg-icon svg-icon-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24"/>
+                                <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+                                <path d="M11,14 L9,14 C8.44771525,14 8,13.5522847 8,13 C8,12.4477153 8.44771525,12 9,12 L11,12 L11,10 C11,9.44771525 11.4477153,9 12,9 C12.5522847,9 13,9.44771525 13,10 L13,12 L15,12 C15.5522847,12 16,12.4477153 16,13 C16,13.5522847 15.5522847,14 15,14 L13,14 L13,16 C13,16.5522847 12.5522847,17 12,17 C11.4477153,17 11,16.5522847 11,16 L11,14 Z" fill="#000000"/>
+                            </g>
+                        </svg>
+                    </span>
+                    {{ view.routes['new'].name|title }}
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <form class="mb-15">
+                <div class="row mb-6">
+                    <div class="col-lg-3 mb-lg-0 mb-6">
+                        <label class="font-weight-bolder">Code:</label>
+                        <input type="text" class="form-control datatable-input" placeholder="E.g: brand" data-col-index="1">
+                    </div>
+                    <div class="col-lg-3 mb-lg-0 mb-6">
+                        <label class="font-weight-bolder">Grupo de atributos:</label>
+                        <select class="form-control datatable-input selectpicker" data-col-index="3">
+                            <option></option>
+                            <option value="isnull">Indefinido</option>
+                            {% for attribute_set in product_attributes_set %}
+                                <option value="{{ attribute_set.id }}">{{ attribute_set.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-lg-3 mb-lg-0 mb-6">
+                        <label class="font-weight-bolder">Connector:</label>
+                        <select class="form-control datatable-input selectpicker" data-col-index="4">
+                            <option></option>
+                            <option value="isnull">Indefinido</option>
+                            {% for connector in connectors %}
+                                <option value="{{ connector.id }}">{{ connector }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-8">
+                    <div class="col-lg-12">
+                        <button class="btn btn-light-primary btn-primary--icon mr-2" data-toggle="global_filter">
+                            <span>
+                                <i class="la la-search"></i>
+                                <span>{{ 'Search'|trans }}</span>
+                            </span>
+                        </button>
+                        <button class="btn btn-secondary btn-secondary--icon" data-toggle="global_clean_filter">
+                            <span>
+                                <i class="la la-close"></i>
+                                <span>{{ 'Clean'|trans }}</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <table class="table table-separate table-head-custom table-checkable compact" data-table="ajax" id="connector_attribute_list_table">
+                <thead>
+                    <tr>
+                        <th class="text-nowrap">{{ "#" }}</th>
+                        <th class="text-nowrap">{{ "Connector Attribute"|title }}</th>
+                        <th class="text-nowrap text-center">{{ "Attribute"|title }}</th>
+                        <th class="text-nowrap text-center" data-orderable="false">{{ "Attribute Set"|title }}</th>
+                        <th class="text-nowrap text-center" data-orderable="false">{{ "Connector"|title }}</th>
+                        <th width="1%" data-orderable="false"></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        var selected = [];
+        var initTableAjax = function() {
+            var tableajax = $('table[data-table=ajax]').DataTable({
+                responsive: true,
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child .checkable',
+                },
+                "order": [[ 0, "desc" ]],
+                paging    : true,
+                pagingType: 'full_numbers',
+                colReorder: true,
+                dom: 
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
+                lengthMenu: [10, 25, 50],
+                pageLength: 10,
+                language: {
+                    'lengthMenu': 'Display _MENU_',
+                    "zeroRecords": "No se encontraron resultados",
+                    "infoEmpty": "No hay resultados",
+                },
+                buttons: [
+                    'print',
+                    'copyHtml5',
+                    'csvHtml5'
+                ],
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: `${_HOST}/api/v1/{{ view.module.path }}/list`,
+                    type: 'POST',
+                    headers: {
+                        'X-AUTH-TOKEN': _USERTOKEN
+                    },
+                    data: {
+                        user_id: _USERID
+                        // pagination: { perpage: 50, },
+                        // columnsDef: [ "name", "stock", "price", "special_price", 'status'],
+                    },
+                },
+                columns: [
+                    {
+                        name:"ca.id", 
+                        data:'id', 
+                        class:"font-weight-bolder",
+                        width: 40,
+                        type: 'number',
+                        defaultContent: '',
+                        textAlign: 'left',
+                    },
+                    {
+                        name:"ca.code", 
+                        data:'code', 
+                        class:"valign-middle"
+                    },
+                    {
+                        name:"c.attribute",
+                        data: function(row, type, set){ return row.attribute != null ? row.attribute.label : null; },
+                        class: "text-center valign-middle"
+                    },
+                    {
+                        name:"pas.id",
+                        width: 1,
+                        data: function(row, type, set){
+                            return row.connector_attribute_sets != null 
+                                ? row.connector_attribute_sets.map(e => e.attribute_set.name).join('<br>')
+                                : null; 
+                        },
+                        class: "text-center valign-middle"
+                    },
+                    {
+                        name:"c.id", 
+                        data:'connector.code',
+                        width: 1,
+                        class:"valign-middle"
+                    },
+                    {
+                        name:"action", 
+                        data: 'id', 
+                        width: 1
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: -1,
+                        title: 'Actions',
+                        class: "text-center",
+                        orderable: false,
+                        render: function(data, type, full, meta) {
+                            var token = `{{ csrf_token("delete") }}`;
+                            return `
+                                <div class="d-flex">
+                                    ${Datatables.actions([_VIEW.routes.edit, _VIEW.routes.delete], full, token)}
+                                </div>
+                            `;
+                        },
+                    },
+                    {
+                        targets: 2,
+                        class: "text-center valign-middle",
+                        orderable: false,
+                        render: function(data, type, full, meta) {
+                            if (data != null) return data;
+                            return '<span class="label label-lg font-weight-bold label-light-danger label-inline"> indefinido </span>';
+                        },
+                    },
+                    {
+                        targets: 3,
+                        class: "text-center valign-middle",
+                        orderable: false,
+                        render: function(data, type, full, meta) {
+                            if (data != null && data != "") return data;
+                            return '<span class="label label-lg font-weight-bold label-light-danger label-inline"> indefinido </span>';
+                        },
+                    }
+                ]
+            });
+
+            $('button[data-toggle=global_filter]').on('click', function(e) {
+                e.preventDefault();
+                var params = {};
+                $('.datatable-input').each(function() {
+                    var i = $(this).data('col-index');
+                    if (params[i]) {
+                        params[i] += '|' + $(this).val();
+                    }
+                    else {
+                        params[i] = $(this).val();
+                    }
+                });
+                $.each(params, function(i, val) {
+                    // apply search params to datatable
+                    tableajax.column(i).search(val ? val : '', false, false);
+                });
+                tableajax.draw();
+            });
+
+            $('button[data-toggle=global_clean_filter]').on('click', function(e) {
+                e.preventDefault();
+                $('.datatable-input').each(function() {
+                    $(this).val('');
+                    tableajax.column($(this).data('col-index')).search('', false, false);
+                });
+                tableajax.draw();
+            });
+        };
+
+        jQuery(document).ready(function() {
+            initTableAjax();
+        });
+    </script>
+{% endblock %}

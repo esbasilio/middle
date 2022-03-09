@@ -1,0 +1,49 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block content %}
+    <div class="card card-custom gutter-b ">
+        <div class="card-header">
+            <h3 class="card-title">{{ view.module.name|upper }}</h3>
+        </div>
+        {{ form_start(form) }}
+            <div class="card-body">
+                <diw class="row">
+                    <div class="col-md-12 col-lg-6">
+                        {{ form_row(form.name) }}
+                    </div>
+                    <div class="col-md-12 col-lg-6">
+                        {{ form_row(form.logo) }}
+                    </div>
+                </diw>
+                <div class="row">
+                    <div class="col-md-6">
+                        <span class="switch">
+                            <label>
+                                {{ form_widget(form.is_active) }}
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="switch">
+                            <label>
+                                {{ form_widget(form.is_global) }}
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <a href="{{ path(view.routes['list'].path) }}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                    <div class="col-lg-6 text-lg-right">
+                        <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

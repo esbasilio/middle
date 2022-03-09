@@ -1,0 +1,42 @@
+// Include Form Components
+@import "forms/base";
+
+/* Plugin - Parsley */
+.parsley-error {
+    background: #fff !important;
+    border-color: #ff5b57 !important;
+}
+.parsley-error:focus {
+    border-color: #cc4946 !important;
+    outline: 0;
+    box-shadow: 0 0 0 0.125rem rgba(204, 73, 70, 0.3) !important;
+}
+.parsley-success {
+    background: #fff !important;
+    border-color: #00acac !important;
+}
+.parsley-success:focus {
+    border-color: #008a8a !important;
+    outline: 0;
+    box-shadow: 0 0 0 0.125rem rgba(0, 172, 172, 0.3) !important;
+}
+.parsley-error,
+.parsley-success {
+    color: #2d353c !important;
+    box-shadow: none !important;
+}
+.parsley-error:focus,
+.parsley-success:focus {
+    color: #2d353c !important;
+}
+.parsley-errors-list {
+    padding: 0 !important;
+    list-style-type: none !important;
+    margin: 0 !important;
+    color: #e5603b;
+    font-size: 12px !important;
+    line-height: inherit !important;
+}
+.parsley-errors-list.filled {
+    margin-top: 5px !important;
+}

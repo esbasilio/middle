@@ -1,0 +1,24 @@
+admin_product-attribute_index:
+    path:       /
+    controller: 'App\Controller\Admin\ProductAttributeController::list'
+    methods:    GET
+
+admin_product-attribute_list:
+    path:       /list
+    controller: 'App\Controller\Admin\ProductAttributeController::list'
+    methods:    GET
+
+admin_product-attribute_new:
+    path:       /form
+    controller: 'App\Controller\Admin\ProductAttributeController::form'
+    methods:    GET|POST
+
+admin_product-attribute_edit:
+    path:       /form/{id}
+    controller: 'App\Controller\Admin\ProductAttributeController::form'
+    methods:    GET|POST
+
+admin_product-attribute_delete:
+    path:       /delete/{id}
+    controller: 'App\Controller\Admin\ProductAttributeController::delete'
+    methods:    DELETE

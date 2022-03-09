@@ -1,0 +1,134 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block content %}
+	<div class="card card-custom">
+        <div class="card-header">
+            <div class="card-title">
+                {# <span class="card-icon">
+                    <i class="flaticon2-chat-1 text-primary"></i>
+                </span> #}
+                <h3 class="card-label">
+                    {{ view.module.name|upper }}
+                    {# <small>sub title</small> #}
+                </h3>
+            </div>
+            <div class="card-toolbar">
+                <div class="input-group input-group-sm input-group-solid mr-2"  style="width: 300px;">
+					<input type="text" class="form-control pl-4 global_filter" placeholder="Search..." data-toggle="global_filter">
+					<div class="input-group-append">
+                        <button data-toggle="global_clean_filter" class="btn btn-secondary">
+                            <i class="flaticon2-delete text-black-50"></i>
+                        </button>
+                    </div>
+				</div>
+            </div>
+        </div>
+		<div class="card-body">
+            <table class="table table-separate table-head-custom table-checkable compact" data-table="ajax" id="datatable-{{ random(10, 99) }}" token="data-table-{{ random(10, 99) }}">
+                <thead>
+                    <tr>
+                        <th class="text-nowrap">{{ 'key.trans.order'|trans }}</th>
+                        <th class="text-nowrap text-center">{{ 'key.trans.invoice'|trans }}</th>
+                        <th class="text-nowrap text-center">{{ 'connector'|trans }}</th>
+                        <th class="text-nowrap text-center">{{ 'key.trans.application'|trans }}</th>
+                        <th class="text-nowrap text-center">{{ 'intentos'|title }}</th>
+                        <th class="text-nowrap text-center">{{ 'key.trans.status'|trans }}</th>
+                        <th class="text-nowrap text-center">{{ "sincro"|title }}</th>
+                        {# 
+                        <th class="text-nowrap text-center">{{ 'key.trans.price'|trans }}</th>
+                        <th class="text-nowrap text-center">{{ 'key.trans.site'|trans }}</th>
+                        <th class="text-nowrap text-center">{{ 'key.trans.status'|trans }}</th>
+                        <th class="text-nowrap text-center">{{ 'key.trans.dni'|trans }}</th>
+                        <th class="text-nowrap text-center">{{ 'key.trans.customer'|trans }}</th>
+                        <th class="text-nowrap text-center">{{ 'Creado' }}</th> #}
+                        <th  data-orderable="false" class="text-nowrap text-center"></th>
+                    </tr>
+                </thead>
+            </table>
+		</div>
+	</div>
+
+    {% include "admin/ui/modal/prototype.html.twig"
+        with {
+            modal: { type : 'ajax', size : 'xl' }
+        }
+    %}
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        columns = [
+            {name:"o.reference_id",  data: 'order.reference_id', class: "text-center valign-middle"},
+            {name:"o.invoice_id", data: 'order.invoice_id', class: "text-center valign-middle"},
+            {name:"c.code", data: 'connector.code', class: "text-center valign-middle"},
+            {name:"c.application.name", data: 'connector.application.name', class: "text-center valign-middle"},
+            {name:"o.failed_attempts", data: 'failed_attempts', class: "text-center valign-middle"},
+            {name:"o.status", data: 'status', class: "text-center valign-middle"},
+            {
+                name:"o.updated",
+                orderable: true,
+                data: function(row, type, set){
+                    return moment(row.created.date).format('DD/MM/YYYY HH:mm');
+                },
+                class: "text-center valign-middle"
+            },
+            {name:"action", data:'id', class: "text-center valign-middle"}
+        ];
+        columnDefs = [
+            // {
+            //     targets: 0,
+            //     orderable: false,
+            //     render: function(data, type, full, meta) {
+            //         return `
+            //             <div class="d-flex align-items-center">
+            //                 <div class="symbol symbol-60 symbol-light-info" flex-shrink-0">
+            //                     <img src="${full.images[0]}" class="h-75 align-self-end">
+            //                 </div>
+            //                 <div class="ml-3">
+            //                     <span class="text-dark-75 font-weight-bold line-height-sm d-block pb-2">${full.sku}</span>
+            //                     <a href="${_HOST}/product/show/${full.id}" class="text-muted text-hover-primary">${full.name}</a>
+            //                 </div>
+            //             </div>
+            //         `;
+            //     },
+            // },
+            {
+                targets: -1,
+                title: 'Actions',
+                class: "text-center valign-middle",
+                orderable: false,
+                render: function(data, type, full, meta) {
+                    return `\
+                        <div class="with-btn-group">
+                            <a href="${_HOST}/order/push/${full.connector.id}/${full.order.id}" class="btn btn-sm btn-clean btn-icon " title="sincronizar">\
+                                <i class="flaticon-refresh"></i>\
+                            </a>\
+                            <a href="${_HOST}/order/show/${full.order.id}" class="btn btn-sm btn-clean btn-icon " title="details">\
+                                <i class="flaticon-search"></i>\
+                            </a>\
+                        </div>
+                    `;
+                },
+            },
+            {
+                targets: -3,
+                class: "text-center valign-middle",
+                orderable: false,
+                render: function(data, type, full, meta) {
+                    var status = {
+                        warning: {'title': 'WARNING', 'class': ' label-warning'},
+                        success: {'title': 'SUCCESS', 'class': ' label-success'},
+                        error: {'title': 'ERROR', 'class': ' label-danger'},
+                    };
+                    if (typeof status[data] === 'undefined') {
+                        return data;
+                    }
+                    return '<span class="label label-lg font-weight-bold ' + status[data].class + ' label-inline">' + status[data].title + '</span>';
+                },
+            }
+        ];
+
+        jQuery(document).ready(function() {
+            Datatables.initTableAjax(`${_HOST}/api/v1/order/history/list`,columns,columnDefs);
+        });
+    </script>
+{% endblock %}

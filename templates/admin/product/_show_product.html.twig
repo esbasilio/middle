@@ -1,0 +1,64 @@
+{% extends 'admin/product/show.html.twig' %}
+
+{% block tab_container %}
+	<div class="card card-custom gutter-b">
+		<div class="card-body">
+			<h3 class="font-weight-bold font-size-h4 text-dark-75 mb-3">{{ "Detalle del producto"|capitalize }}</h3>
+			{# <div class="text-muted font-weight-bold font-size-sm mb-6">More than 400+ new members</div> #}
+			<div class="font-size-sm mt-6 mb-6 text-muted font-weight-bold">
+				<span class="text-dark flex-root font-weight-bold">{{ entity.description|default("no existe")|raw }}</span>
+			</div>
+			<div class="separator separator-solid"></div>
+			<div class="form-group row my-2">
+				<label class="col-3 col-form-label">{{ "Genero:"|capitalize }}</label>
+				<div class="col-9">
+					{% if entity.getAttribute('gender').value is defined %}
+						<span class="form-control-plaintext font-weight-bolder">{{ entity.getAttribute('gender').value|capitalize }}</span>
+					{% endif %}
+				</div>
+			</div>
+			<div class="form-group row my-2">
+				<label class="col-3 col-form-label">{{ "marca:"|capitalize }}</label>
+				<div class="col-9">
+					{% if entity.getAttribute('brand').value is defined %}
+						<span class="form-control-plaintext font-weight-bolder">{{ entity.getAttribute('brand').value|capitalize }}</span>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+{# 
+	<div class="card card-custom gutter-b">
+		<div class="card-header">
+			<div class="card-title">
+				<h3 class="card-label">{{ "Extra"|capitalize }}</h3>
+			</div>
+		</div>
+		<div class="card-body">
+			<h3 class="font-weight-bold font-size-h4 text-dark-75 mb-3">{{ "Detalle del producto"|title }}</h3>
+			<div class="font-size-sm mb-6">
+				{% if entity.getAttribute('description').value is defined %}
+					<span class="text-dark flex-root font-weight-bold">{{ entity.getAttribute('description').value|raw }}</span>
+				{% endif %}
+			</div>
+			<div class="d-flex flex-grow-1 mb-3">
+				<span class="text-dark-50 flex-root font-weight-bold">SKU</span>
+				<span class="text-dark flex-root font-weight-bold">{{ entity.sku|upper }}</span>
+			</div>
+			<div class="d-flex mb-3">
+				<span class="text-dark-50 flex-root font-weight-bold">Categorias</span>
+				<span class="text-dark flex-root font-weight-bold">
+					{% for cat in entity.getAttribute('category') %}
+						<span class="label label-secundary label-inline mr-2">{{ cat.value|capitalize }}</span>
+					{% endfor %}
+				</span>
+			</div>
+			<div class="d-flex mb-3">
+				<span class="text-dark-50 flex-root font-weight-bold">Marca</span>
+				{% if entity.getAttribute('brand').value is defined %}
+					<span class="text-dark flex-root font-weight-bold">{{ entity.getAttribute('brand').value|capitalize }}</span>
+				{% endif %}
+			</div>
+		</div>
+	</div> #}
+{% endblock %}

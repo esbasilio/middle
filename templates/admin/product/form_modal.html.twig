@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h5 class="modal-title" >{{ view.module.name|default("Product")|upper }}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+    </button>
+</div>
+<div class="modal-body" style="height: 300px;">
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-3 col-lg-3">
+            {{ form_row(form.name) }}
+            {{ form_row(form.parent) }}
+        </div>
+    </div>
+{{ form_end(form) }}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal" >Close</button>
+    <button type="button" id="submitModalForm" class="btn btn-primary font-weight-bold mr-2">Guardar</button>
+</div>

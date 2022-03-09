@@ -1,0 +1,5 @@
+api_order_list:
+    path:       /list
+    controller: 'App\Controller\Api\V1\OrderController::list'
+    methods:    GET|POST
+    
